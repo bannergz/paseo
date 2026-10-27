@@ -57,6 +57,7 @@ export interface SidebarWorkspaceEntry extends SidebarStatusWorkspacePlacement {
   hasRunningScripts: boolean;
   // Provider of the root agent that drives the status dot; null before any agent has run.
   agentProvider?: string | null;
+  agentModel?: string | null;
 }
 
 export interface SidebarProjectEntry {
@@ -183,6 +184,7 @@ export function createSidebarWorkspaceEntry(input: {
     scripts: input.workspace.scripts,
     hasRunningScripts: input.workspace.scripts.some((script) => script.lifecycle === "running"),
     agentProvider: input.workspaceAgentActivity?.get(input.workspace.id)?.provider ?? null,
+    agentModel: input.workspaceAgentActivity?.get(input.workspace.id)?.model ?? null,
   };
 }
 

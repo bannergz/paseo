@@ -166,6 +166,7 @@ export const SidebarWorkspaceRowContent = memo(function SidebarWorkspaceRowConte
               {showAgentIcon && workspace.agentProvider ? (
                 <WorkspaceAgentIcon
                   provider={workspace.agentProvider}
+                  model={workspace.agentModel ?? null}
                   serverId={workspace.serverId}
                 />
               ) : null}

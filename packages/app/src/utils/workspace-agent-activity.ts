@@ -1,11 +1,13 @@
 import type { Agent, WorkspaceDescriptor } from "@/stores/session-store";
 import { isWorkspaceRootAgent } from "@/subagents/policies";
+import { extractAgentModel } from "./extract-agent-model";
 import { deriveSidebarStateBucket } from "./sidebar-agent-state";
 
 export interface WorkspaceAgentActivity {
   agentId: string;
   /** The agent's provider, so a workspace row can show which agent it is running. */
   provider: string;
+  model: string | null;
   status: WorkspaceDescriptor["status"];
   enteredAt: Date | null;
 }
@@ -44,6 +46,7 @@ export function buildWorkspaceAgentActivityIndex(
     activityByWorkspaceId.set(agent.workspaceId, {
       agentId: agent.id,
       provider: agent.provider,
+      model: extractAgentModel(agent),
       status,
       enteredAt,
     });
@@ -54,6 +57,7 @@ export function buildWorkspaceAgentActivityIndex(
     if (
       previousActivity?.agentId === activity.agentId &&
       previousActivity.provider === activity.provider &&
+      previousActivity.model === activity.model &&
       previousActivity.status === activity.status
     ) {
       activityByWorkspaceId.set(workspaceId, previousActivity);

@@ -98,7 +98,13 @@ describe("createSidebarWorkspaceEntry agent provider", () => {
     const workspaceAgentActivity = new Map([
       [
         descriptor.id,
-        { agentId: "a1", provider: "codex", status: "done" as const, enteredAt: null },
+        {
+          agentId: "a1",
+          provider: "codex",
+          model: "gpt-6-luna",
+          status: "done" as const,
+          enteredAt: null,
+        },
       ],
     ]);
 
@@ -109,6 +115,7 @@ describe("createSidebarWorkspaceEntry agent provider", () => {
     });
 
     expect(entry.agentProvider).toBe("codex");
+    expect(entry.agentModel).toBe("gpt-6-luna");
   });
 
   it("has no provider before any agent has run in the workspace", () => {
@@ -117,6 +124,7 @@ describe("createSidebarWorkspaceEntry agent provider", () => {
     const entry = createSidebarWorkspaceEntry({ serverId: "srv", workspace: descriptor });
 
     expect(entry.agentProvider).toBeNull();
+    expect(entry.agentModel).toBeNull();
   });
 });
 
