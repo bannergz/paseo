@@ -4,6 +4,7 @@ import { buildWorkspaceAgentActivityIndex } from "./workspace-agent-activity";
 
 function agent(input: {
   id: string;
+  provider?: string;
   workspaceId?: string;
   status?: Agent["status"];
   turn?: Agent["turn"];
@@ -18,7 +19,7 @@ function agent(input: {
   return {
     serverId: "host-a",
     id: input.id,
-    provider: "codex",
+    provider: input.provider ?? "codex",
     status: input.status ?? "idle",
     turn:
       input.turn ??
@@ -142,6 +143,7 @@ describe("workspace agent activity index", () => {
           "workspace-a",
           {
             agentId: "permission",
+            provider: "codex",
             status: "needs_input",
             enteredAt: new Date("2026-06-01T10:01:00.000Z"),
           },
@@ -150,6 +152,7 @@ describe("workspace agent activity index", () => {
           "workspace-b",
           {
             agentId: "attention",
+            provider: "codex",
             status: "attention",
             enteredAt: new Date("2026-06-01T10:02:00.000Z"),
           },
@@ -196,6 +199,7 @@ describe("workspace agent activity index", () => {
 
     expect(index.get("workspace-a")).toEqual({
       agentId: "root",
+      provider: "codex",
       status: "running",
       enteredAt: new Date("2026-06-01T10:00:00.000Z"),
     });
@@ -231,6 +235,7 @@ describe("workspace agent activity index", () => {
           "workspace-a",
           {
             agentId: "parent",
+            provider: "codex",
             status: "done",
             enteredAt: new Date("2026-06-01T10:00:00.000Z"),
           },
@@ -239,6 +244,7 @@ describe("workspace agent activity index", () => {
           "workspace-b",
           {
             agentId: "child",
+            provider: "codex",
             status: "running",
             enteredAt: new Date("2026-06-01T10:03:00.000Z"),
           },
@@ -315,8 +321,46 @@ describe("workspace agent activity index", () => {
     expect(next).not.toBe(previous);
     expect(next.get("workspace-a")).toEqual({
       agentId: "root",
+      provider: "codex",
       status: "needs_input",
       enteredAt: new Date("2026-06-01T10:05:00.000Z"),
     });
+  });
+
+  it("records the provider of the root agent it picked for the workspace", () => {
+    const result = buildWorkspaceAgentActivityIndex(
+      new Map([
+        [
+          "older",
+          agent({
+            id: "older",
+            provider: "codex",
+            workspaceId: "workspace-a",
+            updatedAt: "2026-01-01T00:00:01.000Z",
+          }),
+        ],
+        [
+          "newer",
+          agent({
+            id: "newer",
+            provider: "claude",
+            workspaceId: "workspace-a",
+            updatedAt: "2026-01-01T00:00:02.000Z",
+          }),
+        ],
+        [
+          "child",
+          agent({
+            id: "child",
+            provider: "opencode",
+            workspaceId: "workspace-a",
+            parentAgentId: "newer",
+            updatedAt: "2026-01-01T00:00:03.000Z",
+          }),
+        ],
+      ]),
+    );
+
+    expect(result.get("workspace-a")).toMatchObject({ agentId: "newer", provider: "claude" });
   });
 });

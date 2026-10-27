@@ -1214,6 +1214,7 @@ export const ptBR: TranslationResources = {
       },
       show: {
         label: "Mostrar",
+        agent: "Agente",
         branch: "Branch",
         project: "Projeto",
         host: "Host",

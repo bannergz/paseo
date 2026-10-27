@@ -1195,6 +1195,7 @@ export const ko: TranslationResources = {
       },
       show: {
         label: "표시 항목",
+        agent: "에이전트",
         branch: "브랜치",
         project: "프로젝트",
         host: "호스트",

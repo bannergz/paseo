@@ -1196,6 +1196,7 @@ export const en = {
       },
       show: {
         label: "Show",
+        agent: "Agent",
         branch: "Branch",
         project: "Project",
         host: "Host",

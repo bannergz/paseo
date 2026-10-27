@@ -1205,6 +1205,7 @@ export const ru: TranslationResources = {
       },
       show: {
         label: "Показывать",
+        agent: "Агент",
         branch: "Ветка",
         project: "Проект",
         host: "Хост",

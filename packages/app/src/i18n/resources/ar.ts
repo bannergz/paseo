@@ -1188,6 +1188,7 @@ export const ar: TranslationResources = {
       },
       show: {
         label: "إظهار",
+        agent: "الوكيل",
         branch: "الفرع",
         project: "المشروع",
         host: "المضيف",

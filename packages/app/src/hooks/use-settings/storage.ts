@@ -184,6 +184,7 @@ function sanitizedFontFamily() {
 
 const SidebarRowItemsSchema = z
   .looseObject({
+    agent: z.boolean().catch(DEFAULT_SIDEBAR_ROW_ITEMS.agent),
     branch: z.boolean().catch(DEFAULT_SIDEBAR_ROW_ITEMS.branch),
     project: z.boolean().catch(DEFAULT_SIDEBAR_ROW_ITEMS.project),
     host: z.boolean().catch(DEFAULT_SIDEBAR_ROW_ITEMS.host),
